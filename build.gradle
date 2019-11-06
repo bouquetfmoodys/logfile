@@ -1,0 +1,47 @@
+buildscript {
+    dependencies {
+        classpath 'org.siouan:frontend-gradle-plugin:1.2.1'
+    }
+}
+
+plugins {
+    id 'org.springframework.boot' version '2.2.0.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'java'
+    id 'org.siouan.frontend' version '1.1.0'
+}
+
+group = 'org.jaalon'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+}
+
+tasks.register('webpack', org.siouan.frontendgradleplugin.tasks.RunNodeTask) {
+    dependsOn tasks.named('installFrontend')
+    script = 'node_modules\\webpack\\bin\\webpack.js'
+}
+
+
+frontend {
+    nodeVersion = '10.15.3'
+    // See 'scripts' section in your 'package.json file'
+    //cleanScript = 'run clean'
+    assembleScript = 'install'
+    //checkScript = 'run check'
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    runtimeOnly 'com.h2database:h2'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+test {
+    useJUnitPlatform()
+}
