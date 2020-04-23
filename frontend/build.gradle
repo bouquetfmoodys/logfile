@@ -1,0 +1,17 @@
+plugins {
+    id "com.github.node-gradle.node" version "2.2.0"
+}
+
+task yarn_build(type: NodeTask) {
+    dependsOn("yarn_install")
+}
+
+task yarn_test(type: NodeTask) {
+    dependsOn("yarn_install")
+}
+
+repositories {
+    maven {
+        url "https://plugins.gradle.org/m2/"
+    }
+}
